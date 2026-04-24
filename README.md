@@ -6,7 +6,8 @@ and converts it into other formats.
 
 ### Requirements
 
-*  [Install python](https://wiki.python.org/moin/BeginnersGuide/Download) (3.2+) if you don't have it installed already.
+*  [Install python](https://wiki.python.org/moin/BeginnersGuide/Download) (3.8+) if you don't have it installed already.
+   - Note: Python 3.8+ is required for modern datetime handling
 
 *  Download the python script by either cloning this repository
    (`git clone https://github.com/Scarygami/location-history-json-converter`)
@@ -19,19 +20,20 @@ and converts it into other formats.
 *  Request your location history via [Google Takeout](https://takeout.google.com/settings/takeout/custom/location_history)
    and once the package is ready, download and unzip it.
 
-   I find it easiest to place the `Location History.json` in the same folder where the script is located.
+   I find it easiest to place the `Location History.json` or `Rutas.json` in the same folder where the script is located.
 
 ### Usage
 ```
 python location_history_json_converter.py input output [-h] [-f {format, see below}]
 
-input                Input File (Location History.json)
+input                Input File (Location History.json or Rutas.json)
 output               Output File (will be overwritten!)
 
 optional arguments:
   -h, --help                             Show this help message and exit
   -f, --format {format, see below}       Format of the output
   -i, --iterative                        Loads the JSON file iteratively
+  --semantic                             Parse as semantic location history (Rutas.json format)
   -s, --startdate STARTDATE              The Start Date - format YYYY-MM-DD (0h00)
   -e, --enddate ENDDATE                  The End Date - format YYYY-MM-DD (0h00)
   -a, --accuracy ACCURACY                Maximum Accuracy (in meters), lower is better
@@ -43,6 +45,20 @@ optional arguments:
 ```
 
 ### Special requirements for some options
+
+#### `--semantic`
+
+This flag enables parsing of Google Maps Semantic Location History format (typically named `Rutas.json` in Spanish locales).
+
+The semantic format contains location data organized by segments with timeline paths, visits, and activities.
+The script extracts location points from these segments and converts them to the standard formats.
+
+Example usage:
+
+    python location_history_json_converter.py Rutas.json output.kml --semantic -f kml
+    python location_history_json_converter.py Rutas.json output.csv --semantic -f csv
+
+When not using the `--semantic` flag, the script expects the standard Google Location History format (usually from `Location History.json`).
 
 #### `-i, --iterative`
 

@@ -1,3 +1,6 @@
 ijson
 Shapely
 python-dateutil
+pandas
+numpy
+python-dateutil
